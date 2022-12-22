@@ -1,0 +1,71 @@
+namespace WindowsFormsApp3
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            String loginUser = textBox1.Text;
+            String passUser = textBox2.Text;
+
+            DB db = new DB();
+
+            DataTable table = new DataTable();
+
+            MySqlDataAdapter adapter = new MySqlDataAdapter();
+
+            MySqlCommand command = new MySqlCommand("SELECT * FROM `users` WHERE `login` = @uL AND `pass` = @uP", db.getConnection());
+            command.Parameters.Add("@uL",MySqlDbType.VarChar).Value = loginUser;
+            command.Parameters.Add("@uP", MySqlDbType.VarChar).Value = passUser;
+
+            adapter.SelectCommand = command;
+            adapter.Fill(table);
+
+           
+
+            if (textBox1.Text == "Ogr" & textBox2.Text == "0312")
+            {
+                Form Form2 = new Form2();
+                Form2.Show();
+                this.Hide();
+            }
+            else
+            if (textBox1.Text != "" && textBox2.Text != "")
+            {
+                MessageBox.Show("Неверный логин или пароль");
+            }
+                if (textBox1.Text == "" || textBox2.Text == "")
+                {
+                    MessageBox.Show("Не все поля заполнены");
+                }
+            
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form3 form3 = new Form3();
+            form3.Show();
+        }
+    }
+}
