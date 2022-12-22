@@ -1,0 +1,57 @@
+namespace WindowsFormsApp3
+{
+    public partial class Form3 : Form
+    {
+        public Form3()
+        {
+            InitializeComponent();
+
+           
+        }
+
+        private void Form3_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+           
+            
+            if (textBox1.Text == "")
+            {
+                MessageBox.Show("Введите логин");
+                return;
+            }
+            if (textBox2.Text == "")
+            {
+                MessageBox.Show("Введите пароль");
+                return;
+            }
+
+
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("INSERT INTO `users` ( `login`, `pass`) VALUES ( @login, @pass )", db.getConnection());
+
+
+            command.Parameters.Add("@login", MySqlDbType.VarChar).Value = textBox1.Text;
+            command.Parameters.Add("@pass", MySqlDbType.VarChar).Value = textBox2.Text;
+           
+        }
+        public Boolean checkUser()
+        {
+           
+
+            DB db = new DB();
+
+            DataTable table = new DataTable();
+
+            MySqlDataAdapter adapter = new MySqlDataAdapter();
+
+            MySqlCommand command = new MySqlCommand("SELECT * FROM `users` WHERE `login` = @uL", db.getConnection());
+            command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = textBox1.Text;
+            
+
+            adapter.SelectCommand = command;
+            adapter.Fill(table);
+            return true;
