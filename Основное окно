@@ -1,0 +1,86 @@
+namespace WindowsFormsApp3
+{
+    public partial class Form2 : Form
+    {
+        public Form2()
+        {
+            InitializeComponent();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int n, i, j;
+            int count = 0;
+            Console.Write("Число: ");
+            n = int.Parse(textBox1.Text);
+            if (n < 1 || n > 50)
+            {
+                Console.WriteLine("число не принадлежит отрезку");
+                return;
+            }
+
+            int[] start_Array = new int[n];
+            List<int> finish = new List<int>();
+
+            for (i = 0; i < n; i++)
+            {
+                start_Array[i] = i + 1;
+            }
+
+            for (i = 0; i < n; i++)
+            {
+                for (j = 1; j <= i; j++)
+                {
+                    if ((start_Array[i] % start_Array[j]) == 0)
+                    {
+                        count += 1;
+                    }
+
+                }
+
+                if (count == 1)
+                {
+                    finish.Add(start_Array[i]);
+                }
+                count = 0;
+            }
+            string m = "";
+            for (i = 0; i < finish.Count; i++)
+            {
+                m = m + $" {finish[i]}";
+            }
+            SaveFileDialog open = new SaveFileDialog();
+            open.Filter = "Image Files(*.BMP)|*.BMP|Image Files(*.JPG)|*.JPG|Image Files(*.GIF)|*.GIF|Image Files(*.PNG)|*.PNG|All files (*.*)|*.*"; //форматы сохранения
+            Image img = new Bitmap(640, 640); // размер картинки
+            Graphics g = Graphics.FromImage(img);
+            g.DrawString($"{m}",
+                new Font("Times New Romans", (float)20), //текст на картинке, шрифт и его размер
+            new SolidBrush(Color.White), img.Width / 2, img.Height / 2); //месторасположения текста
+            if (open.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    img.Save(open.FileName, System.Drawing.Imaging.ImageFormat.Jpeg); //путь и имя сохранения файла
+                }
+                catch
+                {
+                    MessageBox.Show("Невозможно сохранить изображение", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+
+            g = null; //обнуляем переменные во избежании переполнения памяти
+            img = null;
+
+        }
+   
